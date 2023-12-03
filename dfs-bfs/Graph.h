@@ -11,11 +11,11 @@ private:
     friend std::ostream& operator<<(std::ostream& os, const Graph& graph);
 
     void DFSRecursion(int searchNode, std::vector<bool>& visited) {
-        // Mark the current node as visited and print it
+        // Mark the current node as visited
         visited[searchNode] = true;
         std::cout << "[DFS] - " << searchNode << " " << std::endl;
 
-        // Recur for all the vertices adjacent to this vertex
+        // Recur for all the vertices adjacent to the current node
         for (int i = 0; i < adjList[searchNode].size(); i++) {
             if (!visited[adjList[searchNode][i]]) {
                 DFSRecursion(adjList[searchNode][i], visited);
@@ -55,7 +55,6 @@ public:
         // Mark all the vertices as not visited
         std::vector<bool> visited(adjList.size(), false);
 
-        // Call the recursive helper function to print DFS traversal
         DFSRecursion(searchNode, visited);
     }
 
@@ -70,17 +69,16 @@ public:
         queue.push_back(searchNode);
 
         while (queue.size() > 0) {
-            // Dequeue next vertex from queue
+            // Dequeue the current node from queue
             searchNode = queue[0];
             queue.pop_front();
             std::cout << "[BFS] - " << searchNode << std::endl;
 
-            // Get all adjacent vertices of the dequeued vertex searchNode.
-            // If an adjacent has not been visited, then mark it visited and enqueue it
-
+            // For all the adjacent nodes of the current node
             for (auto i = 0; i < adjList[searchNode].size(); i++) {
                 auto adjacent = adjList[searchNode][i];
 
+                // If the node is not visited set visited, and enqueue it
                 if (!visited[adjacent]) {
                     visited[adjacent] = true;
                     queue.push_back(adjacent);
