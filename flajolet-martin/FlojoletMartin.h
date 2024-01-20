@@ -5,20 +5,21 @@
 #include <iostream>
 #include <string>
 #include <bitset>
+#include <algorithm>
 
 class FlojoletMartin {
 private:
-    int hashFn(int x) {
+    int hashFn(int x) const {
         return (1 * x + 6) % 32;
     }
 
-    std::string toBinaryStr(int x) {
+    std::string toBinaryStr(int x) const {
         return std::bitset<8>(x).to_string();
     }
 
-    int countRightmostZeroBits(std::string str) {
+    int countRightmostZeroBits(const std::string& str) const {
         int count = 0;
-        for (int i = str.size() - 1; i > 0; i--) {
+        for (int i = str.size() - 1; i >= 0; i--) {
             if (str[i] == '0') {
                 count++;
             }
@@ -30,16 +31,13 @@ private:
     }
 
 public:
-
-    int estimate(const std::vector<int>& dataList) {
-
+    int estimate(const std::vector<int>& dataList) const {
         int max = 0;
 
         // Iterate over items
-        for (int i = 0; i < dataList.size(); i++) {
-
+        for (const auto& item : dataList) {
             // Hash the item
-            int hashed = hashFn(dataList[i]);
+            int hashed = hashFn(item);
 
             // Convert item to binary
             std::string binStr = toBinaryStr(hashed);
@@ -48,13 +46,9 @@ public:
             int rightmostZeroCount = countRightmostZeroBits(binStr);
 
             // Set the max
-            if (rightmostZeroCount > max) {
-                max = rightmostZeroCount;
-            }
-
+            max = std::max(max, rightmostZeroCount);
         }
 
         return pow(2, max);
     }
-
 };
